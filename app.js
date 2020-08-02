@@ -1,7 +1,7 @@
-// const fs = require('fs')
+const fs = require('fs')
 const inquirer = require('inquirer')
 // console.log(inquirer)
-// const generatePage = require('./src/page-template')
+const generatePage = require('./src/page-template')
 
 // //Lesson 1 Code
 // const profileDataArgs = process.argv.slice(2)
@@ -64,7 +64,7 @@ const promptUser = () => {
         {
             type: 'input',
             name: 'about',
-            message: 'Provide some information about yourself:'
+            message: 'Provide some information about yourself:',
             when: ({ confirmAbout }) => confirmAbout
         }
     ])
@@ -152,4 +152,12 @@ const promptUser = () => {
   promptUser()
   //.then(answers => console.log(answers))
   .then(promptProject)
-  .then(projectAnswers => console.log(projectAnswers))
+  .then(portfolioData => {
+      const pageHTML = generatePage(portfolioData);
+      
+        fs.writeFile('index.html', pageHTML, err => {
+            if (err) throw err;
+    
+            //console.log('Page created! Checkout index.html to see the output!')
+    })
+  })
