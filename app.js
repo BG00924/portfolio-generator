@@ -1,4 +1,6 @@
-const fs = require('fs')
+// const fs = require('fs')
+// replacing above as we do this in the other file
+const {writeFile, copyFile} = require('./utils/generate-site.js')
 const inquirer = require('inquirer')
 // console.log(inquirer)
 const generatePage = require('./src/page-template')
@@ -111,7 +113,7 @@ const promptUser = () => {
             type: 'checkbox',
             name: 'languages',
             message: 'What did you complete this project with? (Check all that apply)',
-            choices: ['javascrip', 'html', 'css', 'es6', 'jquery', 'bootstrap', 'node']
+            choices: ['javascript', 'html', 'css', 'es6', 'jquery', 'bootstrap', 'node']
         },
         {
             type: 'input',
@@ -153,11 +155,34 @@ const promptUser = () => {
   //.then(answers => console.log(answers))
   .then(promptProject)
   .then(portfolioData => {
-      const pageHTML = generatePage(portfolioData);
+    //   const pageHTML = 
+    return generatePage(portfolioData);
       
-        fs.writeFile('index.html', pageHTML, err => {
-            if (err) throw err;
-    
-            //console.log('Page created! Checkout index.html to see the output!')
-    })
+        // fs.writeFile('./dist/index.html', pageHTML, err => {
+        //     if (err) {
+        //         console.log(err);
+        //         return;
+        //     };
+        //     console.log('Page created! Checkout index.html to see the output!')
+        //     fs.copyFile('./src/style.css', './dist/style.css', err => {
+        //         if (err) {
+        //             console.log(err);
+        //             return;
+        //         }
+        //         console.log('Style sheet copied successfully!')
+        //     })
+        // })
+  })
+  .then(pageHTML => {
+      return writeFile(pageHTML)
+  })
+  .then(writeFileResponse => {
+      console.log(writeFileResponse);
+      return copyFile();
+  })
+  .then(copyFileResponse => {
+      console.log(copyFileResponse);
+  })
+  .catch(err => {
+      console.log(err)
   })
